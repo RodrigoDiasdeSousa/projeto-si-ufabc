@@ -1,6 +1,6 @@
 # Detecção de Fraude em Cartão de Crédito
 
-Trabalho de Sistemas Inteligentes — comparação entre Regressão Logística e Random Forest
+Trabalho de Sistemas Inteligentes. Comparação entre Regressão Logística e Random Forest
 na detecção de transações fraudulentas, avaliados por *holdout* 80/20 e validação cruzada
 *k-fold* (k = 5).
 
@@ -20,10 +20,9 @@ acima e coloque em `dados/creditcard.csv`.
 ## Tratamento
 
 - Remoção de 1.081 linhas duplicadas
-- Remoção da coluna `Time` — são segundos desde a primeira transação da base, ou seja, um
-  proxy da ordem das linhas, que não generaliza para dados futuros
+- Remoção da coluna `Time` — são segundos desde a primeira transação da base, que não generaliza para dados futuros
 - Padronização com `StandardScaler`, ajustado apenas no treino (e dentro do `Pipeline`,
-  na validação cruzada, para não vazar a dobra de validação)
+  na validação cruzada, para não vazar dados)
 - Desbalanceamento tratado com `class_weight="balanced"`, sem reamostragem
 
 Restam 29 variáveis preditoras.
@@ -56,16 +55,16 @@ Métrica principal: **PR-AUC**. Acurácia não serve — prever "legítima" para
 ## Conclusões
 
 **As duas métricas discordam sobre o vencedor.** O ROC-AUC aponta a Regressão Logística
-(0,9648 contra 0,9421); o PR-AUC aponta o Random Forest (0,8149 contra 0,6752). A explicação
+(0,9648 contra 0,9421); o AUC-PR aponta o Random Forest (0,8149 contra 0,6752). A explicação
 está na classe rara: o ROC-AUC é dominado pelos ~56 mil negativos do conjunto de teste, onde
-os dois modelos acertam trivialmente, e por isso não enxerga a diferença que importa. O PR-AUC
+os dois modelos acertam trivialmente, e por isso não enxerga a diferença que importa. O AUC-PR
 olha só para a classe positiva. É o motivo de ele ser a métrica de decisão aqui.
 
 **A vantagem do Random Forest não é sorte da divisão.** As cinco dobras do k-fold do RF
 (0,785 a 0,866) não têm nenhuma sobreposição com as cinco da Regressão Logística
-(0,710 a 0,791) — cinco de cinco divisões, o mesmo vencedor.
+(0,710 a 0,791) cinco de cinco divisões, o mesmo vencedor.
 
-**O holdout foi pessimista com a Regressão Logística.** Seu PR-AUC de 0,6752 numa divisão
+**O holdout foi pessimista com a Regressão Logística.** Seu AUC-PR de 0,6752 numa divisão
 única fica abaixo de *todas* as suas cinco dobras (mínimo 0,710). Aquela divisão específica
 calhou de ser desfavorável, o que ilustra por que uma estimativa isolada é frágil e por que
 vale reportar as duas avaliações.
