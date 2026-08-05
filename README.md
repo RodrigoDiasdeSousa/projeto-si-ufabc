@@ -33,14 +33,14 @@ Métrica principal: **PR-AUC**. Acurácia não serve — prever "legítima" para
 
 ### Holdout 80/20
 
-| Modelo | PR-AUC | ROC-AUC | Recall | Precisão | F1 |
+| Modelo | PR-AUC | ROC-AUC | Recall | Precision | F1 |
 |---|---|---|---|---|---|
 | Regressão Logística | 0,6752 | 0,9648 | 0,8737 | 0,0558 | 0,1049 |
 | Random Forest | **0,8149** | 0,9421 | 0,7263 | 0,9324 | 0,8166 |
 
 ### K-fold (k = 5), média ± desvio padrão
 
-| Modelo | PR-AUC | ROC-AUC | Recall | Precisão | F1 |
+| Modelo | PR-AUC | ROC-AUC | Recall | Precision | F1 |
 |---|---|---|---|---|---|
 | Regressão Logística | 0,7540 ± 0,0271 | 0,9817 ± 0,0084 | 0,9073 ± 0,0291 | 0,0582 ± 0,0059 | 0,1093 ± 0,0102 |
 | Random Forest | **0,8393 ± 0,0273** | 0,9671 ± 0,0130 | 0,8095 ± 0,0449 | 0,8980 ± 0,0211 | 0,8507 ± 0,0268 |
