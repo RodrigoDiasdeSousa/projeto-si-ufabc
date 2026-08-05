@@ -14,7 +14,7 @@ transações de cartões europeus em setembro de 2013.
 - `V1`–`V28` são componentes de PCA aplicados pelos autores por confidencialidade;
   apenas `Time`, `Amount` e `Class` estão na forma original
 
-O CSV tem 143 MB e **não está versionado** (acima do limite do GitHub). Baixe pelo link
+O CSV tem 143 MB. Baixe pelo link 
 acima e coloque em `dados/creditcard.csv`.
 
 ## Tratamento
