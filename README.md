@@ -11,7 +11,7 @@ transações de cartões europeus em setembro de 2013.
 
 - 284.807 transações × 31 colunas (283.726 após remover duplicatas)
 - 473 fraudes — **0,17%** das transações, ou 1 a cada 600
-- `V1`–`V28` são componentes de PCA aplicados pelos autores por confidencialidade;
+- `V1`–`V28` são componentes aplicados pelos autores por confidencialidade;
   apenas `Time`, `Amount` e `Class` estão na forma original
 
 O CSV tem 143 MB. Baixe pelo link 
@@ -20,7 +20,7 @@ acima e coloque em `dados/creditcard.csv`.
 ## Tratamento
 
 - Remoção de 1.081 linhas duplicadas
-- Remoção da coluna `Time` — são segundos desde a primeira transação da base, que não generaliza para dados futuros
+- Remoção da coluna `Time` são segundos desde a primeira transação da base, que não generaliza para dados futuros
 - Padronização com `StandardScaler`, ajustado apenas no treino (e dentro do `Pipeline`,
   na validação cruzada, para não vazar dados)
 - Desbalanceamento tratado com `class_weight="balanced"`, sem reamostragem
@@ -29,7 +29,7 @@ Restam 29 variáveis preditoras.
 
 ## Resultados
 
-Métrica principal: **PR-AUC**. Acurácia não serve — prever "legítima" para tudo já acerta 99,83%.
+Métrica principal: **AUC-PR**. Acurácia não serve, pois prever "legítima" para tudo já acerta 99,83%.
 
 ### Holdout 80/20
 
@@ -54,25 +54,25 @@ Métrica principal: **PR-AUC**. Acurácia não serve — prever "legítima" para
 
 ## Conclusões
 
-**As duas métricas discordam sobre o vencedor.** O ROC-AUC aponta a Regressão Logística
+**As duas métricas discordam sobre o vencedor.** O AUC-ROC aponta a Regressão Logística
 (0,9648 contra 0,9421); o AUC-PR aponta o Random Forest (0,8149 contra 0,6752). A explicação
-está na classe rara: o ROC-AUC é dominado pelos ~56 mil negativos do conjunto de teste, onde
+está na classe rara: o AUC-ROC é dominado pelos ~56 mil negativos do conjunto de teste, onde
 os dois modelos acertam trivialmente, e por isso não enxerga a diferença que importa. O AUC-PR
 olha só para a classe positiva. É o motivo de ele ser a métrica de decisão aqui.
 
-**A vantagem do Random Forest não é sorte da divisão.** As cinco dobras do k-fold do RF
+**A vantagem do Random Forest não é sorte da partição do dataset.** As cinco dobras do k-fold do RF
 (0,785 a 0,866) não têm nenhuma sobreposição com as cinco da Regressão Logística
 (0,710 a 0,791) cinco de cinco divisões, o mesmo vencedor.
 
 **O holdout foi pessimista com a Regressão Logística.** Seu AUC-PR de 0,6752 numa divisão
 única fica abaixo de *todas* as suas cinco dobras (mínimo 0,710). Aquela divisão específica
-calhou de ser desfavorável, o que ilustra por que uma estimativa isolada é frágil e por que
+calhou de ser desfavorável, o que demonstra por que uma estimativa isolada é frágil e por que
 vale reportar as duas avaliações.
 
-**O gargalo da Regressão Logística é precisão, não recall.** Ela encontra mais fraudes que o
+**O gargalo da Regressão Logística é o precision.** Ela encontra mais fraudes que o
 RF (0,874 contra 0,726), mas com precisão de 5,6%: 1.404 alarmes falsos para 83 fraudes
 encontradas. Na prática o Random Forest deixa passar 14 fraudes a mais e, em troca, evita
-1.399 bloqueios indevidos — cerca de 100 clientes poupados por fraude adicional perdida.
+1.399 bloqueios indevidos, cerca de 100 clientes poupados por fraude adicional perdida.
 
 **Modelo escolhido: Random Forest.**
 
